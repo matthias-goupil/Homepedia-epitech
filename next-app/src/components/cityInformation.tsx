@@ -48,7 +48,7 @@ function CityInformation({ city, onClose }: ICityInformationProps) {
       <SheetContent className="sm:max-w-[600px]">
         <SheetHeader>
           <SheetTitle>
-            {city.cityName} - {city.postalCode}
+            {city.nom} - {city.code}
           </SheetTitle>
         </SheetHeader>
 
@@ -65,7 +65,7 @@ function CityInformation({ city, onClose }: ICityInformationProps) {
             <TabsContent value="chart">
               <CityNoteChart
                 notes={[
-                  { cityName: city.cityName, note: city.note, color: "blue" },
+                  { cityName: city.nom, note: city.avisGlobal, color: "blue" },
                 ]}
               />
             </TabsContent>
@@ -73,7 +73,7 @@ function CityInformation({ city, onClose }: ICityInformationProps) {
               {
                 <DataTable
                   columns={columns}
-                  data={[city.note].filter(Boolean) as Note[]}
+                  data={[city.avisGlobal].filter(Boolean) as Note[]}
                 />
               }
             </TabsContent>

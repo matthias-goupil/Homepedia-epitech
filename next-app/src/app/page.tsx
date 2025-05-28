@@ -2,9 +2,13 @@
 import CityCard from "@/components/cityCard";
 import CityComparator from "@/components/cityComparator";
 import CityInformation from "@/components/cityInformation";
+import FilterForm from "@/components/filterForm";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { regions } from "@/lib/constants/regions";
+import { useFilterStore } from "@/store/filterStore";
 import { City } from "@/utils/types/city";
-import { Map, Marker, Overlay } from "pigeon-maps";
+import { GeoJsonLoader, Map, Marker, Overlay } from "pigeon-maps";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 const cities = [
@@ -578,19 +582,44 @@ const cities = [
   },
 ];
 
+const departements = {
+  "09": 0.5,
+  "11": 0.7,
+  "12": 0.1,
+  "30": 0.8,
+  "34": 0.6,
+  "31": 0.4,
+  "32": 0.9,
+  "46": 0.1,
+};
+
 export default function Home() {
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [comparator, setComparator] = useState<City[]>([]);
   const [selectedCityInformation, setSelectedCityInformation] =
     useState<City | null>(null);
   const [comparatorOpen, setComparatorOpen] = useState(false);
-
+  const [cities, setCities] = useState<City[]>([]);
   useEffect(() => {
     if (comparator.length === 0) {
       setComparatorOpen(false);
     }
   }, [comparator]);
 
+  const region = useFilterStore((state) => state.region);
+
+  const [coord, setCoord] = useState<[number, number]>([43.4637, 2.145]);
+  useEffect(() => {
+    const data = regions.find((el) => el.name === region);
+    console.log("oui", data);
+    if (data) {
+      setCoord([data.lat, data.lon]);
+      fetch(`api/avis/regions/${region}`).then(async (res) => {
+        const dataCities = await res.json();
+        setCities(dataCities);
+      });
+    }
+  }, [region]);
   return (
     <div className="w-screen h-screen relative">
       <Button
@@ -614,6 +643,9 @@ export default function Home() {
           });
         }}
       />
+      <Card className="absolute z-50 top-4 left-4 p-4">
+        <FilterForm />
+      </Card>
       {selectedCityInformation && (
         <CityInformation
           city={selectedCityInformation}
@@ -623,13 +655,30 @@ export default function Home() {
         />
       )}
       <Map
-        defaultCenter={[45.879, 4.25]}
-        defaultZoom={11}
+        center={coord}
+        defaultZoom={8}
         onClick={() => {
           setSelectedCity(null);
         }}
       >
-        {cities.map(({ coordinates: { long, lat } }, index) => (
+        {region && (
+          <GeoJsonLoader
+            link={`/api/geojson/regions/${region}`}
+            styleCallback={(feature, hover) => {
+              let color = "#93c0d099";
+              const intensity = departements[feature.properties.code];
+              if (intensity) {
+                if (intensity < 0.33) color = "rgba(255, 10, 0, 0.7)";
+                else if (intensity < 0.66) color = "rgba(255, 165, 0, 0.7)";
+                else color = "rgba(60, 179, 113, 0.7)";
+              }
+              // return hover
+              //   ? { fill: "#93c0d099", strokeWidth: "2" }
+              return { fill: color, strokeWidth: "1", stroke: "grey" };
+            }}
+          />
+        )}
+        {cities.map(({ coodonnees: { long, lat } }, index) => (
           <Marker
             key={`${long}-${lat}`}
             width={50}
@@ -642,27 +691,27 @@ export default function Home() {
         {selectedCity != null && (
           <Overlay
             anchor={[
-              selectedCity.coordinates.lat,
-              selectedCity.coordinates.long,
+              selectedCity.coodonnees.lat,
+              selectedCity.coodonnees.long,
             ]}
           >
             <CityCard
-              cityName={selectedCity.cityName}
+              cityName={selectedCity.nom}
               onAddToComparator={() => {
                 if (
                   !comparator.find(
                     (city) =>
-                      city.cityName === selectedCity.cityName &&
-                      city.postalCode === selectedCity.postalCode
+                      city.nom === selectedCity.nom &&
+                      city.code === selectedCity.code
                   )
                 ) {
                   setComparator((curr) => [...curr, selectedCity]);
                   toast(
-                    `Vous venez d'ajouter ${selectedCity.cityName} au comparateur`
+                    `Vous venez d'ajouter ${selectedCity.nom} au comparateur`
                   );
                 } else {
                   toast(
-                    `${selectedCity.cityName} est déjà ajouté au comparateur`
+                    `${selectedCity.nom} est déjà ajouté au comparateur`
                   );
                 }
                 setSelectedCity(null);

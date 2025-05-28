@@ -12,10 +12,9 @@ export interface Note {
 }
 
 export interface Review {
-  date: string;
   positif: string;
   negatif: string;
-  peopleAgree: number;
-  peopleDisagree: number;
+  soutenu: number;
+  pasSoutenu: number;
   note: Note;
 }

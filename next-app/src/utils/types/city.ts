@@ -1,13 +1,18 @@
 import { Review, Note } from "./review";
 
 export interface City {
-  coordinates: {
+  coodonnees: {
     long: number;
     lat: number;
   };
-  cityName: string;
-  postalCode: string;
-  totalNotes: number;
-  note?: Note;
-  reviews?: Review[];
+  nom: string;
+  code: string;
+  codesPostaux: string[];
+  codeDepartement: string;
+  codeRegion: string;
+  codeEpci: string;
+  siren: string;
+  totalAvis: number;
+  avisGlobal: Note;
+  avis: Review[];
 }

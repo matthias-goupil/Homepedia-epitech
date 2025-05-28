@@ -31,7 +31,6 @@ import Review from "./review";
 import { DataTable } from "./dataTable";
 import {
   CityNoteWithCityName,
-  columns,
   columnsWithCityName,
 } from "./cityNoteColums";
 import { CircleX } from "lucide-react";
@@ -67,16 +66,16 @@ function CityComparator({
           <div className="p-4 flex flex-col gap-4">
             <div className="bg-slate-50 rounded p-4">
               <h2 className="font-semibold mb-3">Villes sélectionnées</h2>
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-x-2 gap-y-2 flex-wrap">
                 {cities.map((city, index) => (
                   <Badge
-                    key={`${city.cityName}-${city.postalCode}`}
+                    key={`${city.nom}-${city.code}`}
                     style={{
                       backgroundColor: colors[index] || "red",
                     }}
                     className="font-normal"
                   >
-                    {city.cityName} - {city.postalCode}
+                    {city.nom} - {city.code}
                     <span
                       onClick={() => {
                         console.log(index);
@@ -101,9 +100,9 @@ function CityComparator({
               <TabsContent value="chart">
                 <CityNoteChart
                   notes={cities.map((city, index) => ({
-                    cityName: city.cityName,
-                    note: city.note,
+                    cityName: city.nom,
                     color: colors[index] || "red",
+                    note: city.avisGlobal
                   }))}
                 />
               </TabsContent>
@@ -114,10 +113,10 @@ function CityComparator({
                     cities
                       .map((city, index) => ({
                         city: {
-                          name: city.cityName,
+                          name: city.nom,
                           color: colors[index],
                         },
-                        ...city.note,
+                        ...city.avisGlobal,
                       }))
                       .filter(Boolean) as CityNoteWithCityName[]
                   }
@@ -127,14 +126,14 @@ function CityComparator({
 
             <div>
               <Tabs
-                defaultValue={`${cities[0].cityName}-${cities[0].postalCode}`}
+                defaultValue={`${cities[0].nom}-${cities[0].code}`}
                 className="w-full"
               >
-                <TabsList className="w-full bg-slate-50">
+                <TabsList className="w-full bg-slate-50 flex-wrap flex h-auto">
                   {cities.map((city, index) => (
                     <TabsTrigger
-                      key={`${city.cityName}-${city.postalCode}`}
-                      value={`${city.cityName}-${city.postalCode}`}
+                      key={`${city.nom}-${city.code}`}
+                      value={`${city.nom}-${city.code}`}
                       className="flex items-center gap-2"
                     >
                       <span
@@ -143,14 +142,14 @@ function CityComparator({
                           backgroundColor: colors[index] || "red",
                         }}
                       ></span>
-                      {`${city.cityName} (${city.postalCode})`}
+                      {`${city.nom} (${city.code})`}
                     </TabsTrigger>
                   ))}
                 </TabsList>
                 {cities.map((city) => (
                   <TabsContent
-                    key={`${city.cityName}-${city.postalCode}`}
-                    value={`${city.cityName}-${city.postalCode}`}
+                    key={`${city.nom}-${city.code}`}
+                    value={`${city.nom}-${city.code}`}
                   >
                     <ReviewsDialog city={city} />
                   </TabsContent>

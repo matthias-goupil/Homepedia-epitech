@@ -28,7 +28,7 @@ function ReviewsDialog({ city }: IReviewsDialogProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const reviewsPerPage = 2;
 
-  const totalPages = Math.ceil((city.reviews?.length || 0) / reviewsPerPage);
+  const totalPages = Math.ceil((city.avis?.length || 0) / reviewsPerPage);
 
   const handlePageChange = (page: number) => {
     if (page >= 0 && page < totalPages) {
@@ -36,7 +36,7 @@ function ReviewsDialog({ city }: IReviewsDialogProps) {
     }
   };
 
-  const paginatedReviews = city.reviews?.slice(
+  const paginatedReviews = city.avis?.slice(
     currentPage * reviewsPerPage,
     (currentPage + 1) * reviewsPerPage
   );
@@ -49,7 +49,7 @@ function ReviewsDialog({ city }: IReviewsDialogProps) {
       <DialogContent className="overflow-scroll h-[calc(100vh-100px)] w-[80%] sm:max-w-none">
         <DialogHeader>
           <DialogTitle>
-            Avis sur la ville de {`${city.cityName} - ${city.postalCode}`}
+            Avis sur la ville de {`${city.nom} - ${city.code}`}
           </DialogTitle>
         </DialogHeader>
         <div className="flex flex-col h-full justify-between py-5">

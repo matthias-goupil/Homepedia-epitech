@@ -8,10 +8,10 @@ import { ColumnDef } from "@tanstack/react-table";
 
 export const columns: ColumnDef<Note>[] = [
   {
-    accessorKey: "globalNote",
+    accessorKey: "global",
     header: "Note Globale",
     cell: ({ row }) => {
-      return <div className="font-medium">{row.getValue("globalNote")}</div>;
+      return <div className="font-medium">{row.getValue("global")}</div>;
     },
   },
   {
@@ -81,7 +81,7 @@ export const columnsWithCityName: ColumnDef<CityNoteWithCityName>[] = [
     },
   },
   {
-    accessorKey: "globalNote",
+    accessorKey: "global",
     header: "Note Globale",
   },
   {
