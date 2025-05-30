@@ -1,0 +1,62 @@
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    ports:
+      - "19000:9870"    # Web UI du namenode
+      - "9001:8020"     # RPC du namenode
+    environment:
+      - CLUSTER_NAME=test
+    volumes:
+      - namenode:/hadoop/dfs/name
+      - ../../../donnees_brutes/data_filtres:/mnt/data
+    networks:
+      - hadoop
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode
+    environment:
+      - CLUSTER_NAME=test
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    volumes:
+      - datanode:/hadoop/dfs/data
+    depends_on:
+      - namenode
+    networks:
+      - hadoop
+
+  datanode1:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode1
+    environment:
+      - CLUSTER_NAME=test
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    volumes:
+      - datanode1:/hadoop/dfs/data
+    depends_on:
+      - namenode
+    networks:
+      - hadoop
+
+  datanode2:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode2
+    environment:
+      - CLUSTER_NAME=test
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    volumes:
+      - datanode2:/hadoop/dfs/data
+    depends_on:
+      - namenode
+    networks:
+      - hadoop
+
+volumes:
+  namenode:
+  datanode:
+  datanode1:
+  datanode2:
+
+networks:
+  hadoop:
