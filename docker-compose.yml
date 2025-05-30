@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   mongodb:
     extends:
@@ -26,6 +24,21 @@ services:
       file: ./bigdata-communes/docker/hdfs-compose.yml
       service: datanode2
 
+  spark-master:
+    extends:
+      file: ./bigdata-communes/docker/spark-compose.yml
+      service: spark-master
+
+  spark-worker-1:
+    extends:
+      file: ./bigdata-communes/docker/spark-compose.yml
+      service: spark-worker-1
+
+  spark-worker-2:
+    extends:
+      file: ./bigdata-communes/docker/spark-compose.yml
+      service: spark-worker-2
+      
 networks:
   hadoop:
 
