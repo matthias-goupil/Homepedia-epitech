@@ -16,7 +16,7 @@ async function main() {
     const collection = db.collection(COLLECTION_NAME);
 
     // Lire le fichier JSON (adapté à la taille, ici en une fois)
-    const data = JSON.parse(fs.readFileSync('./next-app/src/mock/mockCities.json', 'utf-8'));
+    const data = JSON.parse(fs.readFileSync('./../next-app/src/mock/mockCities.json', 'utf-8'));
 
     // Vérifie que c’est un tableau
     if (!Array.isArray(data)) {

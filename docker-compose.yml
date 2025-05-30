@@ -2,13 +2,36 @@ version: "3.8"
 
 services:
   mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-    restart: unless-stopped
+    extends:
+      file: ./bigdata-communes/docker/mongo-compose.yml
+      service: mongodb
+
+  namenode:
+    extends:
+      file: ./bigdata-communes/docker/hdfs-compose.yml
+      service: namenode
+
+  datanode:
+    extends:
+      file: ./bigdata-communes/docker/hdfs-compose.yml
+      service: datanode
+
+  datanode1:
+    extends:
+      file: ./bigdata-communes/docker/hdfs-compose.yml
+      service: datanode1
+
+  datanode2:
+    extends:
+      file: ./bigdata-communes/docker/hdfs-compose.yml
+      service: datanode2
+
+networks:
+  hadoop:
 
 volumes:
+  namenode:
+  datanode:
+  datanode1:
+  datanode2:
   mongo_data:

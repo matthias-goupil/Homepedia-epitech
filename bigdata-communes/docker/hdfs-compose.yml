@@ -9,7 +9,7 @@ services:
       - CLUSTER_NAME=test
     volumes:
       - namenode:/hadoop/dfs/name
-      - ../../../donnees_brutes/data_filtres:/mnt/data
+      - ../data_villes:/mnt/data
     networks:
       - hadoop
 
@@ -51,12 +51,3 @@ services:
       - namenode
     networks:
       - hadoop
-
-volumes:
-  namenode:
-  datanode:
-  datanode1:
-  datanode2:
-
-networks:
-  hadoop:
