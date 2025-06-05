@@ -1,4 +1,4 @@
 #!/bin/bash
 /opt/spark/sbin/start-master.sh
-export PATH=/opt/spark/bin:$PATH
+export PATH=$PATH:/opt/spark/bin
 tail -f /dev/null
