@@ -12,12 +12,6 @@ df = spark.read.option("header", "true") \
     .option("delimiter", ";") \
     .csv("hdfs://namenode:8020/data_villes/data/DS_RP_EMPLOI_LR_PRINC_CSV_FR/raw/DS_RP_EMPLOI_LR_PRINC_data.csv")
 
-# # Créer la session Spark
-# spark = SparkSession.builder.appName("ChomageParCommune").getOrCreate()
-
-# # Lire le CSV
-# df = spark.read.csv("chemin/vers/ton_fichier.csv", header=True, sep=";", inferSchema=True)
-
 # Filtrer les lignes selon les critères
 df_filtre = df.filter(
     (col("AGE") == "Y_GE15") &
