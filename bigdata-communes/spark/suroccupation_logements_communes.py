@@ -42,10 +42,12 @@ result_df = final_df.select(
     col("pourcentage_suroccupation").alias("Pourcentage suroccupation")
 )
 
-result_df.write.mode("overwrite").parquet("hdfs://namenode:8020/data_villes/data/DS_RP_LOGEMENT_COMP_CSV_FR/clean/suroccupation_logements_communes.parquet")
+df_final = result_df.withColumnRenamed("GEO", "code_insee")
+
+df_final.write.mode("overwrite").parquet("hdfs://namenode:8020/data_villes/data/DS_RP_LOGEMENT_COMP_CSV_FR/clean/suroccupation_logements_communes.parquet")
 
 # Affichage
-result_df.show(truncate=False)
+df_final.show(truncate=False)
 
 # Arrêt de Spark
 spark.stop()

@@ -58,11 +58,12 @@ for code, label in code_to_label.items():
         col_clean = label.strip().lower().replace(" ", "_").replace("’", "").replace("'", "")
         df_result = df_result.withColumnRenamed(code, col_clean)
 
-# Affichage
-df_result.show()
+df_final = df_result.withColumnRenamed("GEO", "code_insee")
 
 # Écriture du résultat transformé dans HDFS (en Parquet par exemple)
-df_result.write.mode("overwrite").parquet("hdfs://namenode:8020/data_villes/data/DS_BPE_CSV_FR/clean/equipements_communes.parquet")
+df_final.write.mode("overwrite").parquet("hdfs://namenode:8020/data_villes/data/DS_BPE_CSV_FR/clean/equipements_communes.parquet")
+
+df_final.show()
 
 # Arrêt de la session Spark
 spark.stop()

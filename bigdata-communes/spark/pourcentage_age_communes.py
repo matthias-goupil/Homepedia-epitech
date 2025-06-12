@@ -61,9 +61,11 @@ final_df = result_df.select("GEO", "AGE", "avg_value", "percent") \
     .unionByName(total_final.select("GEO", "AGE", "avg_value", "percent")) \
     .orderBy("GEO", "AGE")
 
-final_df.show(truncate=False)
+df_final = final_df.withColumnRenamed("GEO", "code_insee")
 
-final_df.write.mode("overwrite").parquet("hdfs://namenode:8020/data_villes/data/DS_RP_POPULATION_PRINC_CSV_FR/clean/pourcentages_age_communes.parquet")
+df_final.write.mode("overwrite").parquet("hdfs://namenode:8020/data_villes/data/DS_RP_POPULATION_PRINC_CSV_FR/clean/pourcentages_age_communes.parquet")
+
+df_final.show(truncate=False)
 
 # Fermeture de la session
 spark.stop()

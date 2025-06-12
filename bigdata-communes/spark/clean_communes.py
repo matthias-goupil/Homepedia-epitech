@@ -31,5 +31,7 @@ df_filtre = df.select(*colonnes_a_conserver)
 # 4. Écriture du résultat transformé dans HDFS (en Parquet par exemple)
 df_filtre.write.mode("overwrite").parquet("hdfs://namenode:8020/data_villes/data/communes/clean/communes_clean.parquet")
 
+df_filtre.show(truncate=False)
+
 # 5. Arrêt de la session Spark
 spark.stop()

@@ -33,8 +33,12 @@ df_taux = df_pivot.withColumn("taux_chomage", (col("chomeurs") / col("total")) *
 # Moyenne du taux de chômage par commune sur les 3 années
 df_resultat = df_taux.groupBy("GEO").agg(round(avg("taux_chomage"), 2).alias("taux_chomage_moyen"))
 
+df_final = df_resultat.withColumnRenamed("GEO", "code_insee")
+
 # 4. Écriture du résultat transformé dans HDFS (en Parquet par exemple)
-df_resultat.write.mode("overwrite").parquet("hdfs://namenode:8020/data_villes/data/DS_RP_EMPLOI_LR_PRINC_CSV_FR/clean/chomage_moyen_communes.parquet")
+df_final.write.mode("overwrite").parquet("hdfs://namenode:8020/data_villes/data/DS_RP_EMPLOI_LR_PRINC_CSV_FR/clean/chomage_moyen_communes.parquet")
+
+df_final.show(truncate=False)
 
 # 5. Arrêt de la session Spark
 spark.stop()
