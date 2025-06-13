@@ -2,7 +2,7 @@ services:
   spark-master:
     image: apache/spark:latest
     container_name: spark-master
-    command: ["/bin/bash", "/scripts/start-master.sh"]
+    command: ["/bin/bash", "./scripts/start-master.sh"]
     ports:
       - "8080:8080"
       - "7077:7077"

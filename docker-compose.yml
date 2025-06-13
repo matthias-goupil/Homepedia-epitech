@@ -38,6 +38,11 @@ services:
     extends:
       file: ./bigdata-communes/docker/spark-compose.yml
       service: spark-worker-2
+
+  review-generator:
+    extends:
+      file: ./bigdata-communes/docker/review-generator.yml
+      service: review-generator
       
 networks:
   hadoop:

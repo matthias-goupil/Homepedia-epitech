@@ -1,0 +1,12 @@
+services:
+  review-generator:
+    build:
+      context: ../../  # <- le dossier racine du projet
+      dockerfile: bigdata-communes/docker/review-generator/Dockerfile
+    container_name: review-generator
+    ports:
+      - "9999:9999"
+    networks:
+      - hadoop
+    depends_on:
+      - spark-master
