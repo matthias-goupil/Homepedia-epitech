@@ -50,7 +50,7 @@ def update_mongodb(review):
         avis = city.get("avis", [])
         avis.append(new_review)
         total = len(avis)
-        keys = new_review["note"].keys()
+        keys = new_review["note"].asDict().keys()
         avg = {k: round(sum(a["note"][k] for a in avis) / total, 1) for k in keys}
         cities.update_one(
             {"code": code},
